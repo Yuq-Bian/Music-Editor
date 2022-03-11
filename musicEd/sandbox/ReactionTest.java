@@ -17,19 +17,17 @@ public class ReactionTest extends Window {
 
     public ReactionTest() {
         super("ReactionTest!", UC.windowWidth, UC.windowHeight);
-        Reaction.initialReactions.addReaction(new Reaction("SW-SW"){
-            public int bid(Gesture gest) {return 0;}
-            public void act(Gesture gest) {new Box(gest.vs);}
-        });
+        Reaction.initialReactions.addReaction(new Reaction("SW-SW") {
+            @Override
+            public int bid(Gesture gest) {
+                return 0;
+            }
 
-        // Reaction.initialReactions.addReaction(new Reaction("S-S"){
-        //     public int bid(Gesture gest) {return 0;}
-        //     public void act(Gesture gest) {
-        //         Box b = new Box(gest.vs);
-        //         b.vs.size.x = b.vs.size.y;
-        //         b.isCircle = true;
-        //     }
-        // });
+            @Override
+            public void act(Gesture gest) {
+                new Box(gest.vs);
+            }
+        });
     }
 
     public void paintComponent(Graphics g) {
@@ -39,11 +37,22 @@ public class ReactionTest extends Window {
         Layer.ALL.show(g);
     }
 
-    public void mousePressed(MouseEvent me) {Gesture.AREA.dn(me.getX(), me.getY()); repaint();}
-    public void mouseDragged(MouseEvent me) {Gesture.AREA.drag(me.getX(), me.getY()); repaint();}
-    public void mouseReleased(MouseEvent me) {Gesture.AREA.up(me.getX(), me.getY()); repaint();}
+    public void mousePressed(MouseEvent me) {
+        Gesture.AREA.dn(me.getX(), me.getY());
+        repaint();
+    }
 
-    //----------------------------------Box-----------------------------------
+    public void mouseDragged(MouseEvent me) {
+        Gesture.AREA.drag(me.getX(), me.getY());
+        repaint();
+    }
+
+    public void mouseReleased(MouseEvent me) {
+        Gesture.AREA.up(me.getX(), me.getY());
+        repaint();
+    }
+
+    // ----------------------------------Box-----------------------------------
     public static class Box extends Mass {
         public G.VS vs;
         public Color c = G.rndColor();
@@ -54,23 +63,31 @@ public class ReactionTest extends Window {
             this.vs = vs;
 
             addReaction(new Reaction("S-S") {
+                @Override
                 public int bid(Gesture gest) {
                     int x = gest.vs.xM(), y = gest.vs.yL();
-                    if (!Box.this.vs.hit(x, y)) {return UC.noBid;}  // "this" is this Reaction's Box. Read Oracle docs..
+                    if (!Box.this.vs.hit(x, y)) {
+                        return UC.noBid;
+                    } // "this" is this Reaction's Box. Read Oracle docs..
                     return Math.abs(x - Box.this.vs.xM());
                 }
 
-                public void act(Gesture gest) {Box.this.deleteMass();}
+                @Override
+                public void act(Gesture gest) {
+                    Box.this.deleteMass();
+                }
             });
         }
 
+        @Override
         public void show(Graphics g) {
             if (isCircle) {
                 g.setColor(c);
                 g.fillOval(vs.loc.x, vs.loc.y, vs.size.x, vs.size.y);
             } else {
                 vs.fill(g, c);
-            }            
+            }
         }
     }
+    
 }

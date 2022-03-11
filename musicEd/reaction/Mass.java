@@ -2,10 +2,10 @@ package musicEd.reaction;
 
 import musicEd.graphicsLib.G;
 import musicEd.music.I;
-import java.awt.Graphics;
 
 public abstract class Mass extends Reaction.List implements I.Show {
     public Layer layer;
+    private int HashCode = G.rnd(100000000);
 
     public Mass(String layerName) {
         layer = Layer.byName.get(layerName);
@@ -16,13 +16,17 @@ public abstract class Mass extends Reaction.List implements I.Show {
         }
     }
 
-    public void deleteMass() {clearAll(); layer.remove(this);}
+    public void deleteMass() {
+        clearAll();
+        layer.remove(this);
+    }
 
-    // Explain this later.
-    private int HashCode = G.rnd(100000000);
-    public int hashCode(){return HashCode;}
-    public boolean equals(Object o) {return this == o;}
+    public int hashCode() {
+        return HashCode;
+    }
 
-    @Override
-    public void show(Graphics g) {}
+    public boolean equals(Object o) {
+        return this == o;
+    }
+
 }

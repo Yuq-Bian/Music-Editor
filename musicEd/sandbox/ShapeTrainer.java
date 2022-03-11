@@ -22,7 +22,7 @@ public class ShapeTrainer extends Window {
     }
 
     public void setState() {
-        currState = (!Shape.Database.isLegal(currName))? ILLEGAL : UNKNOWN;
+        currState = (!Shape.Database.isLegal(currName)) ? ILLEGAL : UNKNOWN;
         if (currState == UNKNOWN) {
             if (Shape.DB.containsKey(currName)) {
                 currState = KNOWN;
@@ -49,8 +49,12 @@ public class ShapeTrainer extends Window {
     public void keyTyped(KeyEvent e) {
         char c = e.getKeyChar();
         System.out.println("typed: " + c);
-        currName = (c == ' ' || c == 0x0D || c == 0x0A)? "" : currName + c; // space bar means to clear those. The other are the different return key for Unix and Windows
-        if (c == 0x0D || c == 0x0A) {Shape.saveDB();}
+        // space bar means to clear those. The other are the different return key for
+        // Unix and Windows
+        currName = (c == ' ' || c == 0x0D || c == 0x0A) ? "" : currName + c;
+        if (c == 0x0D || c == 0x0A) {
+            Shape.saveDB();
+        }
         setState();
         repaint();
     }
@@ -73,26 +77,6 @@ public class ShapeTrainer extends Window {
         Shape.DB.train(currName, ink.norm);
         setState();
         repaint();
-        // Ink ink = new Ink();
-        // Shape.Prototype proto;
-        // if (pList == null) {
-        //     Shape s = new Shape(currName);
-        //     Shape.DB.put(currName, s);
-        //     pList = s.prototypes;            
-        // }
-        // // inkList.add(ink);
-        // if (pList.bestDist(ink.norm) < UC.noMatchedDist) {
-        //     proto = Shape.Prototype.List.bestMatch;
-        //     proto.blend(ink.norm);
-        // } else {
-        //     // this is not similar to any existing prototypes, so we add it.
-        //     proto = new Shape.Prototype();
-        //     pList.add(proto);
-        // }
-        // // ink.norm = proto;
-        // Ink.BUFFER.clear();
-        // setState();
-        // repaint();
     }
 
 }

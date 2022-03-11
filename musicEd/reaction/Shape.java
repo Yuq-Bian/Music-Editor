@@ -3,7 +3,6 @@ package musicEd.reaction;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-
 import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -19,26 +18,35 @@ public class Shape implements Serializable {
     public static String filename = UC.pathToShapeDB; // must go before the DB initialization.
     public Prototype.List prototypes = new Prototype.List();
     public static Database DB = Database.load();
-    public static Shape DOT = DB.get("DOT"); 
-    public static Collection<Shape> SHAPES = DB.values(); //.values() is a function in the map class. Collection backed up by Map.
+    public static Shape DOT = DB.get("DOT");
+    // values() is a function in the map class. Collection backed up by Map.
+    public static Collection<Shape> SHAPES = DB.values();
 
     public Shape(String name) {
         this.name = name;
     }
 
-    public static Shape recognize(Ink ink) { // can return null.
-        if (ink.vs.size.x < UC.dotThreshold && ink.vs.size.y < UC.dotThreshold) {return DOT;}
-        Shape bestMatch = null; int bestSoFar = UC.noMatchedDist;
+    public static Shape recognize(Ink ink) { // can return null
+        if (ink.vs.size.x < UC.dotThreshold && ink.vs.size.y < UC.dotThreshold) {
+            return DOT;
+        }
+        Shape bestMatch = null;
+        int bestSoFar = UC.noMatchedDist;
         for (Shape s : SHAPES) {
             int d = s.prototypes.bestDist(ink.norm);
-            if (d < bestSoFar) {bestMatch = s; bestSoFar = d;}
+            if (d < bestSoFar) {
+                bestMatch = s;
+                bestSoFar = d;
+            }
         }
         return bestMatch;
     }
 
-    public static void saveDB() {DB.save();}
+    public static void saveDB() {
+        DB.save();
+    }
 
-    //---------------------------Shape.Prototype--------------------------------
+    // ---------------------------Shape.Prototype--------------------------------
     public static class Prototype extends Ink.Norm {
         int nBlend = 1;
 
@@ -46,12 +54,12 @@ public class Shape implements Serializable {
             blend(norm, nBlend++);
         }
 
-        //---------------------------Shape.Prototype.List-------------------------
+        // ---------------------------Shape.Prototype.List-------------------------
         public static class List extends ArrayList<Prototype> {
             private static int m = 10, w = 60; // m stands for margin
             private static G.VS showBox = new G.VS(m, m, w, w);
             public static Prototype bestMatch; // set as a side-effect in bestDist
-            
+
             public void show(Graphics g) {
                 g.setColor(Color.ORANGE);
                 for (int i = 0; i < size(); i++) {
@@ -84,18 +92,20 @@ public class Shape implements Serializable {
                     add(new Shape.Prototype());
                 }
             }
-        } //---------------------------Shape.Prototype.List-------------------------
-    }//---------------------------Shape.Prototype--------------------------------
+        }
+    }
 
-    //---------------------------Shape.Database--------------------------------
+    // ---------------------------Shape.Database--------------------------------
     public static class Database extends HashMap<String, Shape> {
         private Database() { // singleton
             super();
             put("DOT", new Shape("DOT"));
-        } 
+        }
 
         public Shape forceGet(String name) { // will always succeed
-            if (!DB.containsKey(name)) {DB.put(name, new Shape(name));}
+            if (!DB.containsKey(name)) {
+                DB.put(name, new Shape(name));
+            }
             return DB.get(name);
         }
 
@@ -136,5 +146,6 @@ public class Shape implements Serializable {
                 System.out.println(e);
             }
         }
-    }//---------------------------Shape.Database--------------------------------
+    }
+
 }

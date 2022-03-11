@@ -14,5 +14,5 @@ public class Clef {
     public void showAt(Graphics g, int x, int yTop, int h) {
         clef.showAt(g, h, x, yTop + 4 * h);
     }
-    
+
 }

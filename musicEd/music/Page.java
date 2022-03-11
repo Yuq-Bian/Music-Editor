@@ -10,7 +10,7 @@ import musicEd.reaction.Mass;
 import musicEd.reaction.Reaction;
 
 public class Page extends Mass {
-    public static Page PAGE; // singleton (can make it final but we're not. only have one alive and can use undo to remove)
+    public static Page PAGE; // singleton (only have one alive and can use undo to remove)
     public static Reaction R1; // a place to remember a particular reaction.
 
     public G.LoHi xMargin, yMargin;
@@ -27,30 +27,33 @@ public class Page extends Mass {
         addNewStaffFmtToSysFmt(y);
         addNewSys();
 
-        // Reactions below
         addReaction(R1 = new Reaction("E-E") { // E-E reaction is to add new staff growing sysFmt
+            @Override
             public int bid(Gesture gest) {
                 return (gest.vs.yM() < PAGE.allSysBot()) ? UC.noBid : 0;
             }
 
+            @Override
             public void act(Gesture gest) {
                 addNewStaffFmtToSysFmt(gest.vs.yM());
-            }            
+            }
         });
 
         addReaction(new Reaction("W-W") { // W-W reaction is to add a new system (already defined)
+            @Override
             public int bid(Gesture gest) {
                 return (gest.vs.yM() < PAGE.allSysBot()) ? UC.noBid : 0;
             }
 
+            @Override
             public void act(Gesture gest) {
                 if (PAGE.sysList.size() == 1) { // then we are adding the second one right after we defined the sys
                     PAGE.sysGap = gest.vs.yM() - PAGE.allSysBot();
-                    R1.disable(); // disable the E-E reaction that can add new staff (disable further additions to sysFmt)
+                    R1.disable(); // disable the E-E reaction that can add new staff (disable further additions to
+                                  // sysFmt)
                 }
                 addNewSys();
             }
-
         });
     }
 
@@ -58,7 +61,9 @@ public class Page extends Mass {
         int yOff = y - yMargin.lo;
         int iStaff = sysFmt.size(); // index of new staff
         sysFmt.addNew(yOff);
-        for (Sys sys : sysList) {sys.addNewStaff(iStaff);}
+        for (Sys sys : sysList) {
+            sys.addNewStaff(iStaff);
+        }
     }
 
     public void addNewSys() {
@@ -69,7 +74,9 @@ public class Page extends Mass {
         }
     }
 
-    public int sysTop(int iSys) {return yMargin.lo + iSys * (sysFmt.height() + sysGap);}
+    public int sysTop(int iSys) {
+        return yMargin.lo + iSys * (sysFmt.height() + sysGap);
+    }
 
     public int allSysBot() { // Bot stands for bottom
         int n = sysList.size();
@@ -84,4 +91,5 @@ public class Page extends Mass {
             sysFmt.showAt(g, sysTop(i), this);
         }
     }
+    
 }

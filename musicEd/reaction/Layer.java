@@ -12,13 +12,23 @@ public class Layer extends ArrayList<I.Show> implements I.Show {
 
     public Layer(String name) {
         this.name = name;
-        if (!name.equals("ALL")) {ALL.add(this);}
+        if (!name.equals("ALL")) {
+            ALL.add(this);
+        }
         byName.put(name, this);
     }
 
     @Override
-    public void show(Graphics g) {for (I.Show s : this) {s.show(g);}}    
-
-    public static void nukeAll() {for (I.Show lay : ALL) {((Layer)lay).clear();}
+    public void show(Graphics g) {
+        for (I.Show s : this) {
+            s.show(g);
+        }
     }
+
+    public static void nukeAll() {
+        for (I.Show lay : ALL) {
+            ((Layer) lay).clear();
+        }
+    }
+
 }
