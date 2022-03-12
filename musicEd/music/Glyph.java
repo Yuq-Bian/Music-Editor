@@ -1,7 +1,6 @@
 package musicEd.music;
 
 import java.awt.Graphics;
-import java.awt.Color;
 import java.awt.Font;
 
 public class Glyph {
@@ -63,8 +62,8 @@ public class Glyph {
     // g.setColor(Color.BLACK);
     g.setFont(theFont);
     g.drawString("" + code, x + (int) Math.floor(dx * H), y + (int) Math.floor(dy * H));
-    g.setColor(Color.RED);
-    g.drawRect(x, y, H, H);
+    //g.setColor(Color.RED);
+    //g.drawRect(x, y, H, H);
     g.setFont(f); // restore old font
   }
 

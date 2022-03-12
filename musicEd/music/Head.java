@@ -22,7 +22,7 @@ public class Head extends Mass implements Comparable<Head> {
         line = staff.lineOff(y); // avoid negative division
         time.heads.add(this);
 
-        addReaction(new Reaction("S-S") {
+        addReaction(new Reaction("S-S") {// unBeam
             @Override
             public int bid(Gesture g) {
                 int x = g.vs.xM(), y1 = g.vs.yL(), y2 = g.vs.yH();
@@ -81,7 +81,7 @@ public class Head extends Mass implements Comparable<Head> {
         addReaction(new Reaction("S-N") { // delete head
             @Override
             public int bid(Gesture g) {
-                int w2 = w() / 2, h = staff.H();
+                int w2 = w() / 2, h = staff.H();// h=8 half space of 2 lines
                 int x = g.vs.xM(), xHead = x() + w2, dx = Math.abs(x - xHead);
                 if (dx > w2) {
                     return UC.noBid;
@@ -104,7 +104,6 @@ public class Head extends Mass implements Comparable<Head> {
     public void show(Graphics g) {
         int H = staff.H();
         Glyph glyph = forcedGlyph != null ? forcedGlyph : normalGlyph();
-        System.out.println(stem);
         g.setColor(stem == null ? Color.ORANGE : Color.BLACK);
         glyph.showAt(g, H, x(), y());
         if (stem != null) {

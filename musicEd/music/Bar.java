@@ -140,6 +140,7 @@ public class Bar extends Mass {
     public void drawDots(Graphics g, int x, int top) { // dots from the top of the single staff
         // assume nLine = 5. (if you're writing a guitar staff which has 6 lines, you
         // will rewrite this method.)
+        g.setColor(Color.BLACK);
         int H = sys.page.sysFmt.maxH;
         if ((barType & LEFT) != 0) {// meaning it is a left leaning bar
             g.fillOval(x - 3 * H, top + 11 * H / 4, H / 2, H / 2);

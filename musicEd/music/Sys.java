@@ -24,23 +24,19 @@ public class Sys extends Mass {
             @Override
             public int bid(Gesture gest) {
                 int x1 = gest.vs.xL(), y1 = gest.vs.yL(), x2 = gest.vs.xH(), y2 = gest.vs.yH();
-                System.out.println("E-E in sys");
                 if (Sys.this.rejectStemRange(y1, y2)) {
                     return UC.noBid;
                 }
                 Stem.List temp = Sys.this.stems.allIntersectors(x1, y1, x2, y2);
-                System.out.println("intersectors " + temp.size());
                 if (temp.size() < 2) {
                     return UC.noBid;
                 }
-                System.out.println("crossed " + temp.size() + " stems");
                 Beam b = temp.get(0).beam;
                 for (Stem s : temp) {
                     if (s.beam != b) {
                         return UC.noBid;
                     }
                 }
-                System.out.println("all stems share owner ");
                 if (b == null && temp.size() != 2) {
                     return UC.noBid;
                 }
@@ -56,7 +52,6 @@ public class Sys extends Mass {
                 Stem.List temp = Sys.this.stems.allIntersectors(x1, y1, x2, y2);
                 Beam b = temp.get(0).beam;
                 if (b == null) {// creating beam on 2 stems
-                    System.out.println("created Beam");
                     new Beam(temp.get(0), temp.get(1));
                 } else {// increment flag count
                     for (Stem s : temp) {
@@ -85,11 +80,6 @@ public class Sys extends Mass {
 
     public boolean rejectStemRange(int y1, int y2) {
         int gap = page.sysGap / 2;
-        System.out.println("y1 " + y1);
-        System.out.println("y2 " + y2);
-        System.out.println("yTop()-gap " + (yTop() - gap));
-        System.out.println("(yBot()+gap) " + (yBot() + gap));
-        System.out.println("" + (y2 < (yTop() - gap)) + " - " + (y1 > (yBot() + gap)));
         return y2 < (yTop() - gap) || y1 > (yBot() + gap);
     }
 
