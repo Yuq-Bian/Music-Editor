@@ -1,5 +1,6 @@
 package musicEd.music;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -70,6 +71,7 @@ public class Stem extends Duration implements Comparable<Stem> {
 
     @Override
     public void show(Graphics g) {
+        g.setColor(Color.BLACK);
         if (nflag >= -1 && heads.size() > 0) {
             int x = x(), h = staff.H(), yH = yFirstHead(), yB = yBeamEnd();
             g.drawLine(x, yH, x, yB);
@@ -211,12 +213,6 @@ public class Stem extends Duration implements Comparable<Stem> {
             Stem.List res = new Stem.List();
             for (Stem s : this) {
                 int x = s.x(), y = Beam.yOfX(x, x1, y1, x2, y2);
-                System.out.print(" x " + x);
-                System.out.print(" y " + y);
-                System.out.print(" x1 " + x1);
-                System.out.print(" y1 " + y1);
-                System.out.print(" x2 " + x2);
-                System.out.println(" y2 " + y2);
                 if (x > x1 && x < x2 && y > s.yLo() && y < s.yHi()) {
                     res.add(s);
                 }
